@@ -69,6 +69,36 @@ describe('buildStatsParameters', () => {
       })
     })
 
+    it('should build parameters for vrm_consum_evcs_fc attribute', () => {
+      const config = {
+        attribute: 'vrm_consum_evcs_fc',
+        stats_interval: 'hours'
+      }
+
+      const result = buildStatsParameters(config)
+
+      expect(result).toEqual({
+        type: 'custom',
+        'attributeCodes[]': 'vrm_consum_evcs_fc',
+        interval: 'hours'
+      })
+    })
+
+    it('should build parameters for vrm_consum_hp_fc attribute', () => {
+      const config = {
+        attribute: 'vrm_consum_hp_fc',
+        stats_interval: 'hours'
+      }
+
+      const result = buildStatsParameters(config)
+
+      expect(result).toEqual({
+        type: 'custom',
+        'attributeCodes[]': 'vrm_consum_hp_fc',
+        interval: 'hours'
+      })
+    })
+
     it('should include show_instance when enabled', () => {
       const config = {
         attribute: 'Dc/0/Power',

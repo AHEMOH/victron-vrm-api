@@ -391,7 +391,14 @@ class VRMAPIService {
 
     const value = responseData.totals[key]
     const formatNumber = (value) => typeof value === 'number' ? value.toFixed(1) : value
-    const text = `${key.replace(/_/g, ' ')}: ${formatNumber(value)}`
+
+    const attributeLabels = {
+      dhE: 'Heating',
+      evE: 'EV charging',
+      daE: 'AC load'
+    }
+    const label = attributeLabels[key] || key.replace(/_/g, ' ')
+    const text = `${label}: ${formatNumber(value)}`
 
     return {
       text,

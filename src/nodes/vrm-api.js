@@ -46,7 +46,7 @@ module.exports = function (RED) {
       }
 
       // Initialize API service
-      const apiService = new VRMAPIService(apiToken)
+      const apiService = new VRMAPIService(apiToken, msg.url ? { baseUrl: msg.url } : {})
 
       node.status({ fill: 'yellow', shape: 'ring', text: 'Connecting to VRM API' })
 
