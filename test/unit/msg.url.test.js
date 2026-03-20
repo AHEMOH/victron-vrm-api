@@ -371,6 +371,49 @@ describe('msg.url Override Functionality', () => {
       })
     })
 
+    it('should use msg.url as base URL for standard installations calls', (done) => {
+      const flow = [
+        {
+          id: 'config1',
+          type: 'config-vrm-api',
+          name: 'Test Config'
+        },
+        {
+          id: 'vrm1',
+          type: 'vrm-api',
+          name: 'Test Stats',
+          vrm: 'config1',
+          api_type: 'installations',
+          installations: 'stats',
+          idSite: '102195',
+          attribute: 'dhE',
+          stats_interval: 'hours',
+          wires: [['helper1']]
+        },
+        {
+          id: 'helper1',
+          type: 'helper'
+        }
+      ]
+
+      const credentials = { config1: { token: 'test_token_64_characters_long_abcdef0123456789abcdef012345' } }
+
+      axios.get = jest.fn().mockResolvedValue({ status: 200, data: { success: true, records: {}, totals: {} } })
+
+      helper.load([configNode, vrmApiNode], flow, credentials, () => {
+        const vrmNode = helper.getNode('vrm1')
+        const helperNode = helper.getNode('helper1')
+
+        helperNode.on('input', () => {
+          const calledUrl = axios.get.mock.calls[0][0]
+          expect(calledUrl).toMatch(/^https:\/\/betavrmapi\.victronenergy\.com\/v2\/installations\/102195\/stats/)
+          done()
+        })
+
+        vrmNode.receive({ payload: 'trigger', url: 'https://betavrmapi.victronenergy.com/v2' })
+      })
+    })
+
     it('should use msg.url even when node configuration would build different URL', (done) => {
       const flow = [
         {

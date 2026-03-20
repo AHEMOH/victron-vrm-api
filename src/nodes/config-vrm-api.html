@@ -9,7 +9,8 @@
         },
         defaults: {
             name: { value: "" },
-            forceIpv4: { value: false }
+            forceIpv4: { value: false },
+            useBetaApi: { value: false }
         },
         label: function() {
             return this.name || 'VRM API';
@@ -29,8 +30,17 @@
     <div class="form-row" style="margin-bottom:0px;">
         <input type="checkbox" id="node-config-input-forceIpv4" style="display:inline-block; margin-left:8px; width:auto; vertical-align:top;">
         <label style="min-width:390px" for="node-config-input-forceIpv4"> Force IPv4 connections</label>
-        <div style="margin-left: 30px; margin-top: 5px; color: #666; font-size: 0.9em;">
+        <div style="margin-left: 30px; margin-top: 5px; color: #666; font-size: 0.9em; max-width: 380px;">
             Enable this if you experience connection issues. Forces the API client to use IPv4 instead of IPv6.
+        </div>
+    </div>
+    <div class="form-row" style="margin-bottom:0px; margin-top: 12px;">
+        <input type="checkbox" id="node-config-input-useBetaApi" style="display:inline-block; margin-left:8px; width:auto; vertical-align:top;">
+        <label style="min-width:390px" for="node-config-input-useBetaApi"> Use beta API environment</label>
+        <div style="margin-left: 30px; margin-top: 5px; color: #666; font-size: 0.9em; max-width: 380px;">
+            Enables access to attributes marked <em>(beta)</em> that are not yet available on the
+            production API. All other attributes continue to use the production API regardless of
+            this setting.
         </div>
     </div>
 </script>

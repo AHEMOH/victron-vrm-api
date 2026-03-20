@@ -329,6 +329,21 @@ describe('VRMAPIService Unit Tests', () => {
         }
       })
     })
+
+    it('should use friendly label for dhE (heating)', () => {
+      const result = service.interpretStatsStatus({ totals: { dhE: 6.6 } })
+      expect(result.text).toBe('Heating: 6.6')
+    })
+
+    it('should use friendly label for evE (EV charging)', () => {
+      const result = service.interpretStatsStatus({ totals: { evE: 3.9 } })
+      expect(result.text).toBe('EV charging: 3.9')
+    })
+
+    it('should use friendly label for daE (AC load)', () => {
+      const result = service.interpretStatsStatus({ totals: { daE: 0.1 } })
+      expect(result.text).toBe('AC load: 0.1')
+    })
   })
 
   describe('API Call Methods', () => {
