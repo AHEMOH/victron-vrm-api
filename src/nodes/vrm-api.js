@@ -193,6 +193,13 @@ module.exports = function (RED) {
 
           node.lastValidUpdate = currentTime
           node.send(messages)
+        } else {
+          const statusText = result.status ? `Error ${result.status}` : 'Request failed'
+          node.status({ fill: 'red', shape: 'dot', text: statusText })
+          const errMsg = RED.util.cloneMessage(msg)
+          errMsg.payload = result.data || { error: result.error }
+          errMsg.status = result.status
+          node.send(errMsg)
         }
 
         // Verbose logging
