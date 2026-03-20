@@ -4,6 +4,7 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
     this.name = config.name
     this.forceIpv4 = config.forceIpv4 || false
+    this.useBetaApi = config.useBetaApi || false
 
     // Transfer data from previous versions
     if (this.credentials && !this.credentials.token && config.token) {

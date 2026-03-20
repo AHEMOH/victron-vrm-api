@@ -40,13 +40,34 @@ module.exports = function (RED) {
       }
 
       // Initialize API service with IPv4 configuration if available
+      // Attributes only available on the beta API environment.
+      // Add new beta-only attributes here; remove them once they land on production.
+      const BETA_ATTRIBUTES = []
+      const BETA_BASE_URL = 'https://betavrmapi.victronenergy.com/v2'
+
+      const useBetaApi = this.vrm && this.vrm.useBetaApi
+
+      if (config.installations === 'stats' && BETA_ATTRIBUTES.includes(config.attribute) && !useBetaApi && !msg.url) {
+        node.status({ fill: 'yellow', shape: 'dot', text: `${config.attribute} requires beta API - enable in config` })
+        return
+      }
+
+      const isBetaAttribute = config.installations === 'stats' && BETA_ATTRIBUTES.includes(config.attribute)
+
+      let baseUrl
+      if (msg.url) {
+        baseUrl = msg.url
+      } else if (useBetaApi && isBetaAttribute) {
+        baseUrl = BETA_BASE_URL
+      }
+
       const serviceOptions = {}
       if (this.vrm && this.vrm.forceIpv4) {
         serviceOptions.forceIpv4 = true
       }
 
       // Initialize API service
-      const apiService = new VRMAPIService(apiToken, msg.url ? { baseUrl: msg.url } : {})
+      const apiService = new VRMAPIService(apiToken, baseUrl ? { baseUrl } : {})
 
       node.status({ fill: 'yellow', shape: 'ring', text: 'Connecting to VRM API' })
 
